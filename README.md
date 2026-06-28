@@ -1,43 +1,25 @@
-# Smart File Management System - Frontend
+# High School Management System Frontend
 
-A modern React frontend application for the Smart File Management System.
+Modern responsive school management dashboard built with React, Vite, Bootstrap 5, React Router DOM, Axios, React Icons, Chart.js, and Context API.
 
 ## Features
 
-- **Authentication**: Login, Signup, Password Reset, Two-Factor Authentication
-- **Dashboard**: Overview with statistics and recent activity
-- **File Management**: Upload, view, search, and manage files
-- **Folder Management**: Create and organize folders
-- **User Management**: View and manage users (Admin/Staff only)
-- **Location Management**: Hierarchical location structure
-- **Role-Based Access Control**: Admin, Staff, and Student roles
-- **Global Search**: Search across all entities
-- **Pagination**: All list pages support pagination
-- **Responsive Design**: Works on desktop and mobile devices
-
-## Tech Stack
-
-- React 18
-- TypeScript
-- Material-UI (MUI) v5
-- React Router v6
-- Axios
-- React Hook Form + Zod
-- Vite
+- Authentication pages with validation and school branding
+- Dashboard summary cards, charts, recent activity, and quick actions
+- Student management with add, edit, delete, detail view, search, class filter, and pagination
+- Teacher management with add, edit, delete, and search
+- Class, attendance, results, fee, timetable, and reports modules
+- Mock JSON data for students, teachers, classes, attendance, results, and payments
+- Toast notifications, loading spinner, responsive sidebar, and reusable tables/cards
 
 ## Setup
 
-1. Install dependencies:
 ```bash
 npm install
-```
-
-2. Start development server:
-```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`
+Open the local Vite URL shown in the terminal.
 
 ## Build
 
@@ -45,45 +27,36 @@ The app will be available at `http://localhost:3000`
 npm run build
 ```
 
-## Environment Variables
-
-Create a `.env` file in the frontend directory:
-
-```
-VITE_API_BASE_URL=http://localhost:8081/api
-```
-
 ## Project Structure
 
+```text
+src/
+├── assets/
+├── components/
+│   ├── Navbar/
+│   ├── Sidebar/
+│   ├── Footer/
+│   ├── Cards/
+│   └── Tables/
+├── pages/
+│   ├── Login/
+│   ├── Dashboard/
+│   ├── Students/
+│   ├── Teachers/
+│   ├── Classes/
+│   ├── Attendance/
+│   ├── Results/
+│   ├── Fees/
+│   ├── Timetable/
+│   └── Reports/
+├── services/
+├── routes/
+├── context/
+├── layouts/
+├── App.tsx
+└── main.tsx
 ```
-frontend/
-├── src/
-│   ├── api/           # API client functions
-│   ├── components/    # React components
-│   ├── contexts/      # React contexts (Auth, Theme)
-│   ├── hooks/         # Custom React hooks
-│   ├── pages/         # Page components
-│   ├── types/         # TypeScript type definitions
-│   └── utils/         # Utility functions
-```
 
-## Backend Requirements
+## Notes
 
-The frontend expects the following backend endpoints:
-
-### Authentication
-- `POST /api/auth/login`
-- `POST /api/auth/signup`
-- `POST /api/auth/forgot-password`
-- `POST /api/auth/reset-password`
-- `POST /api/auth/verify-2fa`
-- `GET /api/auth/me`
-
-### Dashboard
-- `GET /api/dashboard/stats`
-
-### Search
-- `GET /api/search?q={query}`
-
-See the plan document for complete API requirements.
-
+The current app uses mock data and frontend state so every page is immediately usable. Replace `src/services/api.ts` and the context actions with backend calls when the school API is available.
