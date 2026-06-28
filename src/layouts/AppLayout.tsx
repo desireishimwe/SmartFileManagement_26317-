@@ -29,7 +29,7 @@ export function AppLayout() {
       />
       <div className="main-shell">
         <TopNavbar onMenuClick={() => setSidebarOpen(true)} pinned={pinned} onTogglePin={togglePin} />
-        <main className="container-fluid p-3 p-lg-4">
+        <main className="container-fluid pb-3 pb-lg-4" style={{ paddingTop: '3rem', paddingLeft: '4rem', paddingRight: '4rem' }}>
           <Outlet />
         </main>
         <Footer />

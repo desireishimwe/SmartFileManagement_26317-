@@ -2,9 +2,9 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppLayout } from './layouts/AppLayout';
-import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/Login/LoginPage';
 import { ForgotPasswordPage } from './pages/Login/ForgotPasswordPage';
+import { SignupPage } from './pages/Login/SignupPage';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { StudentsPage } from './pages/Students/StudentsPage';
 import { TeachersPage } from './pages/Teachers/TeachersPage';
@@ -51,8 +51,9 @@ function App() {
       <AppProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
             {/* Admin routes */}
@@ -77,7 +78,7 @@ function App() {
               <Route path="student/report-card" element={<StudentReportCardPage />} />
             </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
       </AppProvider>

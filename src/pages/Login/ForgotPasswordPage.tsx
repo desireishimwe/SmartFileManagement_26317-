@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail } from 'react-icons/fi';
-import nuVisionLogo from '../../assets/nu-vision-logo.svg';
+import nuVisionLogo from '../../assets/nu-vision-logo.jpg';
 
 export function ForgotPasswordPage() {
   const [sent, setSent] = useState(false);

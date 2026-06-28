@@ -1,10 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { IconType } from 'react-icons';
 import {
   FiAward, FiBarChart2, FiBookOpen, FiCalendar, FiClipboard,
-  FiCreditCard, FiGrid, FiHome, FiMapPin, FiPieChart, FiUsers,
+  FiCreditCard, FiGrid, FiHome, FiLogOut, FiMapPin, FiPieChart, FiUsers,
 } from 'react-icons/fi';
-import nuVisionLogo from '../../assets/nu-vision-logo.svg';
+import nuVisionLogo from '../../assets/nu-vision-logo.jpg';
 import { useAuth } from '../../context/AuthContext';
 
 const adminNav: { path: string; label: string; icon: IconType }[] = [
@@ -67,7 +67,13 @@ interface SidebarProps {
 }
 
 export function Sidebar({ open, onClose, pinned, onTogglePin }: SidebarProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate('/login', { replace: true });
+  }
   const navItems =
     user?.role === 'parent'   ? parentNav   :
     user?.role === 'finance'  ? financeNav  :
@@ -122,6 +128,17 @@ export function Sidebar({ open, onClose, pinned, onTogglePin }: SidebarProps) {
             );
           })}
         </nav>
+
+        <div className="sidebar-logout">
+          <button
+            className="sidebar-link sidebar-logout-btn w-100"
+            onClick={handleLogout}
+            title={!pinned ? 'Logout' : undefined}
+          >
+            <FiLogOut aria-hidden="true" />
+            <span className="sidebar-label">Logout</span>
+          </button>
+        </div>
       </aside>
 
       {open && (

@@ -5,7 +5,7 @@ import {
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
-import nuVisionLogo from '../../assets/nu-vision-logo.svg';
+import nuVisionLogo from '../../assets/nu-vision-logo.jpg';
 
 function grade(marks: number) {
   if (marks >= 90) return { letter: 'A+', label: 'Outstanding',  cls: 'bg-success' };

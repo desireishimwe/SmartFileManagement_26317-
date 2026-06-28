@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   // admin | academic | finance | teacher | student | parent
+  phone     String?
+  studentId String?  // for parent & student roles
+  className String?
+  subject   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  id             String   @id
+  firstName      String
+  lastName       String
+  gender         String
+  dateOfBirth    String
+  enrollmentDate String
+  level          String
+  combination    String?
+  className      String
+  parentName     String
+  parentPhone    String
+  address        String
+  email          String   @unique
+  profilePhoto   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  attendance Attendance[]
+  results    Result[]
+  fees       Fee[]
+}
+
+model Teacher {
+  id            String @id
+  fullName      String
+  subject       String
+  qualification String
+  phone         String
+  email         String @unique
+  address       String
+}
+
+model SchoolClass {
+  id           String @id
+  name         String @unique
+  classTeacher String
+  room         String
+  students     Int
+  subjects     String // JSON-encoded array
+}
+
+model Attendance {
+  id          String   @id @default(cuid())
+  date        String
+  studentId   String
+  studentName String
+  className   String
+  status      String   // Present | Absent
+  createdAt   DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id])
+}
+
+model Result {
+  id          String @id @default(cuid())
+  studentId   String
+  studentName String
+  className   String
+  subject     String
+  marks       Float
+  gpa         Float
+
+  student Student @relation(fields: [studentId], references: [id])
+}
+
+model Fee {
+  id          String @id @default(cuid())
+  studentId   String
+  studentName String
+  className   String
+  parentName  String
+  parentPhone String
+  amount      Float
+  paid        Float  @default(0)
+  dueDate     String
+
+  student  Student   @relation(fields: [studentId], references: [id])
+  payments Payment[]
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  feeId       String
+  studentName String
+  amount      Float
+  method      String
+  paidBy      String
+  date        String
+  createdAt   DateTime @default(now())
+
+  fee Fee @relation(fields: [feeId], references: [id])
+}
+
+model Event {
+  id          String  @id @default(cuid())
+  title       String
+  date        String
+  startTime   String?
+  endTime     String?
+  category    String
+  description String
+  location    String?
+  audience    String  // JSON-encoded array
+}

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiBookOpen, FiCheckCircle, FiMenu, FiSearch, FiShield } from 'react-icons/fi';
-import nuVisionLogo from '../assets/nu-vision-logo.svg';
+import nuVisionLogo from '../assets/nu-vision-logo.jpg';
 import { TopographicArt } from '../components/TopographicArt';
 
 const highlights = [

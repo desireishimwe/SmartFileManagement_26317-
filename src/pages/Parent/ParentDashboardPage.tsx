@@ -84,56 +84,25 @@ export function ParentDashboardPage() {
 
       {/* Stat cards */}
       <div className="row g-3 mb-4">
-        <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body d-flex align-items-center gap-3">
-              <div className="summary-icon bg-success bg-opacity-10 text-success"><FiCheckCircle /></div>
-              <div>
-                <div className="text-muted small">Days Present</div>
-                <div className="fw-bold fs-4">{presentDays}</div>
-                <div className="text-muted x-small">{absentDays} absent</div>
+        {[
+          { label: 'DAYS PRESENT',   value: presentDays,    sub: `${absentDays} absent`,      icon: <FiCheckCircle />, color: '#20c997', bg: '#d1f5ec' },
+          { label: 'AVERAGE MARKS',  value: avgMarks,       sub: `${myResults.length} subjects`, icon: <FiBarChart2 />,  color: '#0d6efd', bg: '#dce8ff' },
+          { label: 'FEE BALANCE',    value: `$${balance.toLocaleString()}`, sub: balance <= 0 ? 'Fully paid ✓' : `Due ${myFee?.dueDate}`, icon: <FiCreditCard />, color: balance > 0 ? '#dc3545' : '#20c997', bg: balance > 0 ? '#fde8ea' : '#d1f5ec' },
+          { label: 'TOP MARK',       value: myResults.length ? Math.max(...myResults.map(r => r.marks)) : '—', sub: myResults.find(r => r.marks === Math.max(...myResults.map(x => x.marks)))?.subject ?? '', icon: <FiAward />, color: '#fd7e14', bg: '#fdecd8' },
+        ].map(({ label, value, sub, icon, color, bg }) => (
+          <div className="col-6 col-lg-3" key={label}>
+            <div className="card border-0 shadow-sm h-100" style={{ borderTop: `3px solid ${color}` }}>
+              <div className="card-body px-3 py-3">
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', color: '#6c757d' }}>{label}</span>
+                  <span style={{ width: 30, height: 30, borderRadius: 8, background: bg, color, display: 'grid', placeItems: 'center', fontSize: '0.95rem' }}>{icon}</span>
+                </div>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, lineHeight: 1, color: '#1a1f36' }}>{value}</div>
+                <div style={{ fontSize: '0.75rem', color: '#6c757d', marginTop: 4 }}>{sub}</div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body d-flex align-items-center gap-3">
-              <div className="summary-icon bg-primary bg-opacity-10 text-primary"><FiBarChart2 /></div>
-              <div>
-                <div className="text-muted small">Average Marks</div>
-                <div className="fw-bold fs-4">{avgMarks}</div>
-                <div className="text-muted x-small">{myResults.length} subject(s)</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body d-flex align-items-center gap-3">
-              <div className={`summary-icon ${balance > 0 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-success bg-opacity-10 text-success'}`}>
-                <FiCreditCard />
-              </div>
-              <div>
-                <div className="text-muted small">Fee Balance</div>
-                <div className={`fw-bold fs-5 ${balance > 0 ? 'text-danger' : 'text-success'}`}>${balance.toLocaleString()}</div>
-                <div className="text-muted x-small">{balance <= 0 ? 'Fully paid ✓' : `Due ${myFee?.dueDate}`}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body d-flex align-items-center gap-3">
-              <div className="summary-icon bg-info bg-opacity-10 text-info"><FiAward /></div>
-              <div>
-                <div className="text-muted small">Top Mark</div>
-                <div className="fw-bold fs-4">{myResults.length ? Math.max(...myResults.map(r => r.marks)) : '—'}</div>
-                <div className="text-muted x-small">{myResults.find(r => r.marks === Math.max(...myResults.map(x => x.marks)))?.subject ?? ''}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
       <div className="row g-4">
