@@ -1,9 +1,19 @@
 import { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  Legend,
+  LinearScale,
+  Tooltip,
+} from 'chart.js';
 import { FiFileText, FiPlus } from 'react-icons/fi';
 import { DataTable } from '../../components/Tables/DataTable';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function marksToGpa(marks: number): number {
   return Math.min(4.0, parseFloat((marks / 100 * 4.0).toFixed(1)));
@@ -22,25 +32,28 @@ export function ResultsPage() {
   const { user } = useAuth();
   const { results, students, classes, addResult, updateResult, addToast } = useApp();
 
+  const [marks,      setMarks]      = useState('');
+  const [modalSubject, setModalSubject] = useState('');
+
   const isTeacher = user?.role === 'teacher';
+  const isStudent = user?.role === 'student';
+  const isParent  = user?.role === 'parent';
   const canRecord = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'academic';
 
   const teacherSubject = user?.subject ?? '';
+  const effectiveModalSubject = isTeacher ? teacherSubject : modalSubject;
 
-  // Table filters
   const [filterClass,   setFilterClass]   = useState('all');
   const [filterSubject, setFilterSubject] = useState('all');
-
-  // Modal state
   const [showModal,  setShowModal]  = useState(false);
   const [studentId,  setStudentId]  = useState('');
   const [modalClass, setModalClass] = useState('all');
-  const [marks,      setMarks]      = useState('');
 
   const allSubjects = [...new Set(classes.flatMap((c) => c.subjects))].sort();
 
-  // For teacher: always filter results to their subject; otherwise use dropdown
   const filteredResults = results.filter((r) => {
+    if (isStudent && user?.id && r.studentId !== user.id) return false;
+    if (isParent && user?.studentId && r.studentId !== user.studentId) return false;
     const classOk   = filterClass === 'all'   || r.className === filterClass;
     const subjectOk = isTeacher
       ? r.subject === teacherSubject
@@ -56,6 +69,7 @@ export function ResultsPage() {
   function openModal() {
     setStudentId('');
     setModalClass(user?.className ?? 'all');
+    setModalSubject(isTeacher ? teacherSubject : '');
     setMarks('');
     setShowModal(true);
   }
@@ -65,8 +79,8 @@ export function ResultsPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const marksNum = parseInt(marks, 10);
-    const subjectVal = isTeacher ? teacherSubject : filterSubject;
-    if (!studentId || !subjectVal || isNaN(marksNum)) return;
+    const subjectVal = isTeacher ? teacherSubject : modalSubject;
+    if (!studentId || !subjectVal || subjectVal === 'all' || isNaN(marksNum)) return;
 
     const student = students.find((s) => s.id === studentId);
     if (!student) return;
@@ -95,10 +109,6 @@ export function ResultsPage() {
   const marksNum   = parseInt(marks, 10);
   const previewGpa = !isNaN(marksNum) && marks !== '' ? marksToGpa(marksNum) : null;
 
-  // Modal subject: teacher's fixed subject; for admin use filterSubject (or prompt them to pick one in modal)
-  const [modalSubject, setModalSubject] = useState('');
-  const effectiveModalSubject = isTeacher ? teacherSubject : modalSubject;
-
   return (
     <div>
       {/* Page heading */}
@@ -108,6 +118,8 @@ export function ResultsPage() {
           <p>
             {isTeacher
               ? <>Subject: <strong>{teacherSubject}</strong>{user?.className ? <> &nbsp;·&nbsp; Class: <strong>{user.className}</strong></> : null}</>
+              : isStudent || isParent
+              ? 'View your academic results and performance.'
               : 'Add marks, update grades, calculate GPA, and generate report cards.'}
           </p>
         </div>
@@ -196,7 +208,10 @@ export function ResultsPage() {
               Performance Analysis
               {isTeacher && <span className="text-muted fw-normal ms-2 small">— {teacherSubject}</span>}
             </div>
-            <div className="card-body">
+            <div className="card-body" style={{ minHeight: 280 }}>
+              {filteredResults.length === 0 ? (
+                <p className="text-muted text-center py-5 mb-0">No results to display for the current filters.</p>
+              ) : (
               <Bar
                 data={{
                   labels: filteredResults.map((r) => r.studentName),
@@ -215,6 +230,7 @@ export function ResultsPage() {
                   scales: { y: { min: 0, max: 100 } },
                 }}
               />
+              )}
             </div>
           </div>
         </div>

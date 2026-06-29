@@ -23,6 +23,8 @@ import { ParentFeesPage } from './pages/Parent/ParentFeesPage';
 import { ParentReportPage } from './pages/Parent/ParentReportPage';
 import { StudentEventsPage } from './pages/Student/StudentEventsPage';
 import { StudentReportCardPage } from './pages/Student/StudentReportCardPage';
+import { ParentClearancePage } from './pages/Clearance/ParentClearancePage';
+import { AdminClearancePage } from './pages/Clearance/AdminClearancePage';
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -67,12 +69,14 @@ function App() {
               <Route path="fees"       element={<RequireRole roles={['admin']}><FeesPage /></RequireRole>} />
               <Route path="timetable"  element={<TimetablePage />} />
               <Route path="reports"    element={<RequireRole roles={['admin']}><ReportsPage /></RequireRole>} />
+              <Route path="admin/clearance" element={<RequireRole roles={['admin']}><AdminClearancePage /></RequireRole>} />
               <Route path="teacher/dashboard"  element={<TeacherDashboardPage />} />
               <Route path="student/dashboard"   element={<StudentDashboardPage />} />
               <Route path="academic/dashboard"  element={<AcademicDashboardPage />} />
               <Route path="finance/dashboard"   element={<FinanceDashboardPage />} />
               <Route path="parent/dashboard"   element={<ParentDashboardPage />} />
               <Route path="parent/fees"        element={<ParentFeesPage />} />
+              <Route path="parent/clearance"   element={<RequireRole roles={['parent']}><ParentClearancePage /></RequireRole>} />
               <Route path="parent/report"      element={<ParentReportPage />} />
               <Route path="student/events"       element={<StudentEventsPage />} />
               <Route path="student/report-card" element={<StudentReportCardPage />} />

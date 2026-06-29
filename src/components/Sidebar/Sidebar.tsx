@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { IconType } from 'react-icons';
 import {
   FiAward, FiBarChart2, FiBookOpen, FiCalendar, FiClipboard,
-  FiCreditCard, FiGrid, FiHome, FiLogOut, FiMapPin, FiPieChart, FiUsers,
+  FiCreditCard, FiGrid, FiHome, FiLogOut, FiMapPin, FiPieChart, FiUsers, FiCheckSquare,
 } from 'react-icons/fi';
 import nuVisionLogo from '../../assets/nu-vision-logo.jpg';
 import { useAuth } from '../../context/AuthContext';
@@ -17,6 +17,7 @@ const adminNav: { path: string; label: string; icon: IconType }[] = [
   { path: '/fees',       label: 'Fees',       icon: FiCreditCard },
   { path: '/timetable',  label: 'Timetable',  icon: FiCalendar   },
   { path: '/reports',    label: 'Reports',    icon: FiPieChart   },
+  { path: '/admin/clearance', label: 'Clearance', icon: FiCheckSquare },
 ];
 
 const teacherNav: { path: string; label: string; icon: IconType }[] = [
@@ -33,6 +34,7 @@ const parentNav: { path: string; label: string; icon: IconType }[] = [
   { path: '/attendance',       label: 'Attendance',   icon: FiClipboard },
   { path: '/parent/fees',      label: 'Payments',     icon: FiCreditCard },
   { path: '/timetable',        label: 'Timetable',    icon: FiCalendar  },
+  { path: '/parent/clearance', label: 'Clearance',    icon: FiCheckSquare },
 ];
 
 const financeNav: { path: string; label: string; icon: IconType }[] = [
@@ -97,7 +99,7 @@ export function Sidebar({ open, onClose, pinned, onTogglePin }: SidebarProps) {
              user?.role === 'academic' ? 'Academic Office'  :
              user?.role === 'teacher'  ? 'Teacher Portal'   :
              user?.role === 'student'  ? 'Student Portal'   :
-             'Management System'}
+             'Nu Vision Admin'}
             </div>
           </div>
           <button

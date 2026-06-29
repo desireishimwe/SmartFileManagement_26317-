@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiBell, FiChevronsLeft, FiChevronsRight, FiLogOut, FiMenu, FiSearch, FiSettings, FiUser } from 'react-icons/fi';
+import nuVisionLogo from '../../assets/nu-vision-logo.jpg';
 import { useAuth } from '../../context/AuthContext';
 
 interface TopNavbarProps {
@@ -37,6 +38,10 @@ export function TopNavbar({ onMenuClick, pinned, onTogglePin }: TopNavbarProps) 
           <FiMenu size={24} />
         </button>
 
+        <div className="topbar-brand-compact d-md-none">
+          <img src={nuVisionLogo} alt="Nu Vision High School" className="topbar-brand-logo" />
+        </div>
+
         {/* Desktop: pin/unpin sidebar toggle */}
         <button
           className="topbar-sidebar-toggle d-none d-lg-grid"
@@ -47,6 +52,14 @@ export function TopNavbar({ onMenuClick, pinned, onTogglePin }: TopNavbarProps) 
         >
           {pinned ? <FiChevronsLeft size={20} /> : <FiChevronsRight size={20} />}
         </button>
+
+        <div className="topbar-brand d-none d-md-flex">
+          <img src={nuVisionLogo} alt="" className="topbar-brand-logo" />
+          <div className="topbar-brand-text">
+            <span className="topbar-brand-name">Nu Vision</span>
+            <span className="topbar-brand-sub">High School</span>
+          </div>
+        </div>
 
         <div className="input-group topbar-search">
           <span className="input-group-text bg-light border-0"><FiSearch /></span>

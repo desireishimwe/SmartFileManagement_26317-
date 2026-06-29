@@ -114,3 +114,41 @@ export interface ToastMessage {
   message: string;
   variant: 'success' | 'danger' | 'info';
 }
+
+export type ClearanceStatus = 'PENDING' | 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'PHOTO_REQUESTED';
+
+export interface RequiredItemTemplate {
+  id: string;
+  name: string;
+  quantity: number;
+  description?: string;
+  className?: string;
+}
+
+export interface ClearanceItemRecord {
+  id: string;
+  itemName: string;
+  requiredQuantity: number;
+  completedQuantity: number;
+  photoDataUrl?: string;
+  verificationCode?: string;
+  photoVerified: boolean;
+  aiConfidence?: number;
+}
+
+export interface StudentClearanceRecord {
+  id: string;
+  clearanceNumber: string;
+  studentId: string;
+  studentName: string;
+  className: string;
+  parentId?: string;
+  status: ClearanceStatus;
+  term: string;
+  admissionDate: string;
+  submittedAt?: string;
+  rejectionReason?: string;
+  randomInspection?: boolean;
+  qrToken?: string;
+  items: ClearanceItemRecord[];
+}
